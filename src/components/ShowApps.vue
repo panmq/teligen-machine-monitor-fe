@@ -1,0 +1,137 @@
+<template>
+  <div id="showapps">
+    <h1>应用列表</h1>
+    <el-table :data="tableData" border style="width: 100%">
+      <el-table-column prop="pid" label="进程ID"></el-table-column>
+      <el-table-column prop="name" label="名字"></el-table-column>
+      <el-table-column prop="path" label="路径"></el-table-column>
+      <el-table-column prop="jvmParm" label="JVM参数"></el-table-column>
+      <el-table-column prop="ports" label="占用端口"></el-table-column>
+      <el-table-column prop="status" label="状态"></el-table-column>
+      <el-table-column inline-template fixed="right" label="操作" style="width: 10%">
+        <span>
+          <a target="_blank" @click="openAppMetric(row.pid)">
+             <el-button type="text" size="small">应用指标</el-button>
+          </a>
+          <a target="_blank" @click="openInstancesRanking(row.pid)">
+             <el-button type="text" size="small">实例排名</el-button>
+          </a>
+          <a target="_blank" @click="openThreadsDump(row.pid)">
+            <el-button type="text" size="small" href>线程Dump</el-button>
+          </a>
+          <a @click="dumpHeap(row.pid)">
+            <el-button type="text" size="small" href>堆Dump</el-button>
+          </a>
+          <a href="/">
+            <el-button type="text" size="small" href>打包</el-button>
+          </a>
+          <a @click="enableGC(row.pid)">
+            <el-button type="text" size="small">启动GC日志</el-button>
+          </a>
+          <a @click="disableGC(row.pid)">
+            <el-button type="text" size="small">关闭GC日志</el-button>
+          </a>
+          <el-popover trigger="hover" placement="top">
+            <p>启动命令: {{ row.startCmd }}</p>
+            <div slot="reference">
+              <a href="/">
+                <el-button type="text" size="small">启动</el-button>
+              </a>
+            </div>
+          </el-popover>
+        </span>
+      </el-table-column>
+    </el-table>
+    <br/>
+    <a href="/showsys">
+      <el-button>系统信息</el-button>
+    </a>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'showapps',
+  data () {
+    return {
+      tableData: [],
+      respStr: ''
+    }
+  },
+  mounted: function () {
+    this.$http.get('http://127.0.0.1:7788/teligen-machine-monitor-be/rest/apps/', {}, {
+      headers: {
+      },
+      emulateJSON: true
+    }).then(function (response) {
+      // 这里是处理正确的回调
+      this.tableData = response.data
+    }, function (response) {
+      // 这里是处理错误的回调
+      console.log(response)
+    })
+  },
+  methods: {
+    openAppMetric (pid) {
+      window.open('http://localhost:3000/dashboard/db/jin-cheng-jian-kong')
+    },
+    openInstancesRanking (pid) {
+      window.open('http://127.0.0.1:7788/teligen-machine-monitor-be/rest/apps/rankInstances/' + pid)
+    },
+    enableGC (pid) {
+      this.$http.get('http://127.0.0.1:7788/teligen-machine-monitor-be/rest/apps/enableGC/' + pid, {}, {
+        headers: {
+        },
+        emulateJSON: true
+      }).then(function (response) {
+        // 这里是处理正确的回调
+        this.$message({
+          showClose: true,
+          message: 'GC日志将会添加到应用日志中'
+        })
+      }, function (response) {
+        // 这里是处理错误的回调
+        console.log(response)
+      })
+    },
+    disableGC (pid) {
+      this.$http.get('http://127.0.0.1:7788/teligen-machine-monitor-be/rest/apps/disableGC/' + pid, {}, {
+        headers: {
+        },
+        emulateJSON: true
+      }).then(function (response) {
+        // 这里是处理正确的回调
+        this.$message({
+          showClose: true,
+          message: 'GC日志已关闭'
+        })
+      }, function (response) {
+        // 这里是处理错误的回调
+        console.log(response)
+      })
+    },
+    openThreadsDump (pid) {
+      window.open('http://127.0.0.1:7788/teligen-machine-monitor-be/rest/apps/dumpThreads/' + pid)
+    },
+    dumpHeap (pid) {
+      this.$http.get('http://127.0.0.1:7788/teligen-machine-monitor-be/rest/apps/dumpHeap/' + pid, {}, {
+        headers: {
+        },
+        emulateJSON: true
+      }).then(function (response) {
+        // 这里是处理正确的回调
+        this.$message({
+          showClose: true,
+          message: '文件将会保存在以下目录: ' + response.data
+        })
+      }, function (response) {
+        // 这里是处理错误的回调
+        console.log(response)
+      })
+    }
+  }
+}
+</script>
+
+<style>
+</style>
