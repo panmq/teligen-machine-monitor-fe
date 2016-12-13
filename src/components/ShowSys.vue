@@ -146,7 +146,7 @@ export default {
     }
   },
   mounted: function () {
-    this.$http.get(config.grafanaHost + '/teligen-machine-monitor-be/rest/sys/', {}, {
+    this.$http.get(config.restBeHost + '/teligen-machine-monitor-be/rest/sys/', {}, {
       headers: {
       },
       emulateJSON: true
