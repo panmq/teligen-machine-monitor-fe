@@ -1,0 +1,4 @@
+{
+  "restBeHost": "http://127.0.0.1:7788",
+  "grafanaHost": "http://127.0.0.1:3000"
+}

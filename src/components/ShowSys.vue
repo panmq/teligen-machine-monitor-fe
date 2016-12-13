@@ -137,6 +137,7 @@
 </template>
 
 <script>
+import config from './config.json'
 export default {
   name: 'showsys',
   data () {
@@ -145,7 +146,7 @@ export default {
     }
   },
   mounted: function () {
-    this.$http.get('http://127.0.0.1:7788/teligen-machine-monitor-be/rest/sys/', {}, {
+    this.$http.get(config.grafanaHost + '/teligen-machine-monitor-be/rest/sys/', {}, {
       headers: {
       },
       emulateJSON: true

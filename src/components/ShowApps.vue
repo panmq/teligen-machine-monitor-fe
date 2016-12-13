@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import config from './config.json'
 export default {
   name: 'showapps',
   data () {
@@ -59,7 +60,7 @@ export default {
     }
   },
   mounted: function () {
-    this.$http.get('http://127.0.0.1:7788/teligen-machine-monitor-be/rest/apps/', {}, {
+    this.$http.get(config.restBeHost + '/teligen-machine-monitor-be/rest/apps/', {}, {
       headers: {
       },
       emulateJSON: true
@@ -73,13 +74,13 @@ export default {
   },
   methods: {
     openAppMetric (pid) {
-      window.open('http://localhost:3000/dashboard/db/jin-cheng-jian-kong')
+      window.open(config.grafanaHost + '/dashboard/db/jin-cheng-jian-kong')
     },
     openInstancesRanking (pid) {
-      window.open('http://127.0.0.1:7788/teligen-machine-monitor-be/rest/apps/rankInstances/' + pid)
+      window.open(config.restBeHost + '/teligen-machine-monitor-be/rest/apps/rankInstances/' + pid)
     },
     enableGC (pid) {
-      this.$http.get('http://127.0.0.1:7788/teligen-machine-monitor-be/rest/apps/enableGC/' + pid, {}, {
+      this.$http.get(config.restBeHost + '/teligen-machine-monitor-be/rest/apps/enableGC/' + pid, {}, {
         headers: {
         },
         emulateJSON: true
@@ -95,7 +96,7 @@ export default {
       })
     },
     disableGC (pid) {
-      this.$http.get('http://127.0.0.1:7788/teligen-machine-monitor-be/rest/apps/disableGC/' + pid, {}, {
+      this.$http.get(config.restBeHost + '/teligen-machine-monitor-be/rest/apps/disableGC/' + pid, {}, {
         headers: {
         },
         emulateJSON: true
@@ -111,10 +112,10 @@ export default {
       })
     },
     openThreadsDump (pid) {
-      window.open('http://127.0.0.1:7788/teligen-machine-monitor-be/rest/apps/dumpThreads/' + pid)
+      window.open(config.restBeHost + '/teligen-machine-monitor-be/rest/apps/dumpThreads/' + pid)
     },
     dumpHeap (pid) {
-      this.$http.get('http://127.0.0.1:7788/teligen-machine-monitor-be/rest/apps/dumpHeap/' + pid, {}, {
+      this.$http.get(config.restBeHost + '/teligen-machine-monitor-be/rest/apps/dumpHeap/' + pid, {}, {
         headers: {
         },
         emulateJSON: true
