@@ -10,28 +10,28 @@
       <el-table-column prop="status" label="状态"></el-table-column>
       <el-table-column inline-template fixed="right" label="操作" style="width: 10%">
         <span>
-          <a target="_blank" @click="openAppMetric(row.pid)">
+          <a v-if="row.pid != ''" target="_blank" @click="openAppMetric(row.pid)">
              <el-button type="text" size="small">应用指标</el-button>
           </a>
-          <a target="_blank" @click="openInstancesRanking(row.pid)">
+          <a v-if="row.pid != ''" target="_blank" @click="openInstancesRanking(row.pid)">
              <el-button type="text" size="small">实例排名</el-button>
           </a>
-          <a target="_blank" @click="openThreadsDump(row.pid)">
+          <a v-if="row.pid != ''" target="_blank" @click="openThreadsDump(row.pid)">
             <el-button type="text" size="small" href>线程Dump</el-button>
           </a>
-          <a @click="dumpHeap(row.pid)">
+          <a v-if="row.pid != ''" @click="dumpHeap(row.pid)">
             <el-button type="text" size="small" href>堆Dump</el-button>
           </a>
-          <a href="/">
+          <a v-if="row.pid != ''" href="/">
             <el-button type="text" size="small" href>打包</el-button>
           </a>
-          <a @click="enableGC(row.pid)">
+          <a v-if="row.pid != '' && row.jvmParm.indexOf('+PrintGC') <= 0"  @click="enableGC(row.pid)">
             <el-button type="text" size="small">启动GC日志</el-button>
           </a>
-          <a @click="disableGC(row.pid)">
+          <a v-if="row.pid != '' && row.jvmParm.indexOf('+PrintGC') > 0" @click="disableGC(row.pid)">
             <el-button type="text" size="small">关闭GC日志</el-button>
           </a>
-          <el-popover trigger="hover" placement="top">
+          <el-popover v-if="row.pid == ''" trigger="hover" placement="top">
             <p>启动命令: {{ row.startCmd }}</p>
             <div slot="reference">
               <a href="/">
