@@ -60,19 +60,22 @@ export default {
     }
   },
   mounted: function () {
-    this.$http.get(config.restBeHost + '/teligen-machine-monitor-be/rest/apps/', {}, {
-      headers: {
-      },
-      emulateJSON: true
-    }).then(function (response) {
-      // 这里是处理正确的回调
-      this.tableData = response.data
-    }, function (response) {
-      // 这里是处理错误的回调
-      console.log(response)
-    })
+    this.getApps()
   },
   methods: {
+    getApps () {
+      this.$http.get(config.restBeHost + '/teligen-machine-monitor-be/rest/apps/', {}, {
+        headers: {
+        },
+        emulateJSON: true
+      }).then(function (response) {
+        // 这里是处理正确的回调
+        this.tableData = response.data
+      }, function (response) {
+        // 这里是处理错误的回调
+        console.log(response)
+      })
+    },
     openAppMetric (pid) {
       window.open(config.grafanaHost + '/dashboard/db/jin-cheng-jian-kong')
     },
@@ -88,7 +91,7 @@ export default {
         // 这里是处理正确的回调
         this.$message({
           showClose: true,
-          message: 'GC日志将会添加到应用日志中'
+          message: 'GC日志将会添加到应用日志中（可能会有所延迟，请稍后再手动刷新本页面）'
         })
       }, function (response) {
         // 这里是处理错误的回调
@@ -104,7 +107,7 @@ export default {
         // 这里是处理正确的回调
         this.$message({
           showClose: true,
-          message: 'GC日志已关闭'
+          message: 'GC日志已关闭（可能会有所延迟，请稍后再手动刷新本页面）'
         })
       }, function (response) {
         // 这里是处理错误的回调
